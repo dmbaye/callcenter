@@ -1,0 +1,18 @@
+[Unit]
+Description=Callcenter outbound campaign dialer (pacing)
+After=network-online.target callcenter-asterisk-ami.service
+Wants=network-online.target callcenter-asterisk-ami.service
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/callcenter
+ExecStart=/usr/bin/php artisan campaigns:dial
+Restart=always
+RestartSec=2
+TimeoutStopSec=10
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target

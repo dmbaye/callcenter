@@ -1,0 +1,44 @@
+# LiveKit server for Callcenter video meetings.
+# Install: https://docs.livekit.io/home/self-hosting/vm/  (single binary: livekit-server)
+# Copy to /etc/livekit/livekit.yaml and use deploy/livekit.service.
+
+port: 7880 # HTTP + WebSocket signalling (proxied by nginx at wss://video.example.com)
+bind_addresses:
+    - 127.0.0.1 # only nginx and Laravel reach the API port
+
+rtc:
+    tcp_port: 7881 # ICE over TCP when UDP is blocked
+    port_range_start: 50000 # media (UDP). Asterisk RTP usually uses 10000-20000: keep them apart.
+    port_range_end: 60000
+    use_external_ip: true
+    # Reuse the coturn server the softphone already uses (ASTERISK_TURN_*):
+    # browsers behind strict NATs and mobile networks relay through it.
+    turn_servers:
+        - host: turn.example.com
+          port: 443
+          protocol: tls
+          username: CHANGE_ME
+          credential: CHANGE_ME
+        - host: turn.example.com
+          port: 3478
+          protocol: udp
+          username: CHANGE_ME
+          credential: CHANGE_ME
+
+keys:
+    # Must match LIVEKIT_API_KEY / LIVEKIT_API_SECRET in .env (secret: 32+ random characters).
+    APIxxxxxxxxxxxx: CHANGE_ME_TO_A_LONG_RANDOM_SECRET
+
+room:
+    auto_create: false # rooms are created by Laravel with the plan's participant cap
+    empty_timeout: 300
+    # Safety net above the biggest plan (Entreprise = 50).
+    max_participants: 60
+
+webhook:
+    api_key: APIxxxxxxxxxxxx
+    urls:
+        - https://callcenter.example.com/webhooks/livekit
+
+logging:
+    level: info

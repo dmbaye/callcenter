@@ -1,0 +1,23 @@
+[Unit]
+Description=Callcenter Asterisk AMI listener
+After=network-online.target asterisk.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/callcenter
+# Creates /run/callcenter for ASTERISK_AMI_SOCKET=/run/callcenter/asterisk-ami.sock
+RuntimeDirectory=callcenter
+RuntimeDirectoryMode=0750
+RuntimeDirectoryPreserve=restart
+ExecStart=/usr/bin/php artisan asterisk:ami-listen --interval=2
+Restart=always
+RestartSec=2
+TimeoutStopSec=10
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

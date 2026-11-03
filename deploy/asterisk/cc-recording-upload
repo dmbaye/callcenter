@@ -1,0 +1,64 @@
+#!/bin/sh
+# Uploads a finished call recording to the Callcenter app, then deletes it.
+#
+# Run by MixMonitor when a recorded call ends (see the cc-record context):
+#   cc-recording-upload /var/spool/asterisk/monitor/callcenter/<account>__<uniqueid>__<linkedid>.wav
+# Run without arguments (cron) to retry every file left behind by a failed upload.
+#
+# Settings: /etc/callcenter/recording.env
+#   CC_APP_URL=https://app.example.com
+#   CC_RECORDING_TOKEN=<same value as ASTERISK_RECORDING_TOKEN in the app .env>
+#   CC_RECORDING_DIR=/var/spool/asterisk/monitor/callcenter
+
+set -u
+
+CONFIG=/etc/callcenter/recording.env
+[ -r "$CONFIG" ] && . "$CONFIG"
+
+: "${CC_APP_URL:?CC_APP_URL is not set in $CONFIG}"
+: "${CC_RECORDING_TOKEN:?CC_RECORDING_TOKEN is not set in $CONFIG}"
+CC_RECORDING_DIR=${CC_RECORDING_DIR:-/var/spool/asterisk/monitor/callcenter}
+
+upload() {
+    file=$1
+    name=$(basename "$file" .wav)
+
+    # <account>__<uniqueid>__<linkedid>
+    account=${name%%__*}
+    rest=${name#*__}
+    uniqueid=${rest%%__*}
+    linkedid=${rest#*__}
+
+    if [ "$account" = "$name" ] || [ -z "$uniqueid" ]; then
+        logger -t cc-recording "skipping unexpected file name: $file"
+        return 0
+    fi
+
+    # Nothing recorded (call never bridged): drop it.
+    if [ ! -s "$file" ]; then
+        rm -f "$file"
+        return 0
+    fi
+
+    if curl -fsS --max-time 300 \
+        -H "Authorization: Bearer $CC_RECORDING_TOKEN" \
+        -F "account=$account" \
+        -F "uniqueid=$uniqueid" \
+        -F "linkedid=$linkedid" \
+        -F "file=@$file;type=audio/wav" \
+        "$CC_APP_URL/webhooks/asterisk/recordings" >/dev/null; then
+        rm -f "$file"
+    else
+        logger -t cc-recording "upload failed, will retry: $file"
+    fi
+}
+
+if [ $# -gt 0 ]; then
+    upload "$1"
+    exit 0
+fi
+
+# Retry mode: files older than 2 minutes (not being written any more).
+find "$CC_RECORDING_DIR" -maxdepth 1 -name '*__*.wav' -mmin +2 2>/dev/null | while read -r file; do
+    upload "$file"
+done

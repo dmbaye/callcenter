@@ -1,0 +1,18 @@
+[Unit]
+Description=Callcenter Reverb WebSocket server (live monitoring push)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/callcenter
+ExecStart=/usr/bin/php artisan reverb:start
+Restart=always
+RestartSec=2
+TimeoutStopSec=10
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target

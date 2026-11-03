@@ -1,0 +1,514 @@
+@import 'tailwindcss';
+
+@import 'tw-animate-css';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+    --font-sans: var(--app-font-sans);
+    --font-display: var(--app-font-display);
+    /* One typeface everywhere: numbers (extensions, timers, codes) use Figtree's tabular figures. */
+    --font-mono: var(--app-font-sans);
+
+    --radius-lg: var(--radius);
+    --color-sun: var(--sun);
+    --radius-md: calc(var(--radius) - 2px);
+    --radius-sm: calc(var(--radius) - 4px);
+
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+
+    --color-destructive: var(--destructive);
+    --color-destructive-foreground: var(--destructive-foreground);
+
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+
+    --color-chart-1: var(--chart-1);
+    --color-chart-2: var(--chart-2);
+    --color-chart-3: var(--chart-3);
+    --color-chart-4: var(--chart-4);
+    --color-chart-5: var(--chart-5);
+
+    /* Spectrum semantic colors (status lights, badges, alerts, stat accents) */
+    --color-positive: var(--positive);
+    --color-positive-subtle: var(--positive-subtle);
+    --color-positive-border: var(--positive-border);
+    --color-positive-strong: var(--positive-strong);
+    --color-notice: var(--notice);
+    --color-notice-subtle: var(--notice-subtle);
+    --color-notice-border: var(--notice-border);
+    --color-notice-strong: var(--notice-strong);
+    --color-negative: var(--negative);
+    --color-negative-subtle: var(--negative-subtle);
+    --color-negative-border: var(--negative-border);
+    --color-negative-strong: var(--negative-strong);
+    --color-informative: var(--informative);
+    --color-informative-subtle: var(--informative-subtle);
+    --color-informative-border: var(--informative-border);
+    --color-informative-strong: var(--informative-strong);
+    --color-neutral-visual: var(--neutral-visual);
+    --color-heading: var(--heading);
+
+    --color-sidebar: var(--sidebar-background);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-ring: var(--sidebar-ring);
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+    *,
+    ::after,
+    ::before,
+    ::backdrop,
+    ::file-selector-button {
+        border-color: var(--border);
+    }
+}
+
+/*
+ * Adobe Spectrum 2 theme for the application screens.
+ * Values come from @adobe/spectrum-tokens (light / dark sets). The whole
+ * project (app, marketing, numbers) uses a single typeface: Figtree.
+ *
+ * The marketing pages (.theme-marketing, set by MarketingLayout) use the same
+ * tokens on the larger scale, see further down.
+ */
+:root {
+    /* Typography */
+    --app-font-sans:
+        'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+        ui-sans-serif, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+    --app-font-display: var(--app-font-sans);
+    --app-font-size: 14px; /* font-size-100 */
+    --app-line-height: 1.5; /* line-height-200 */
+    --heading-weight: 800; /* heading-sans-serif-font-weight: extra-bold */
+    --heading-tracking: 0;
+
+    /* Component shapes and sizes */
+    --control-h: 32px; /* component-height-100 */
+    --control-h-sm: 24px; /* component-height-75 */
+    --control-h-lg: 40px; /* component-height-200 */
+    --control-radius: 8px; /* corner-radius-medium-size-medium */
+    --btn-radius: 9999px; /* pill: button height / 2 */
+    --btn-weight: 700; /* bold */
+    --card-radius: 10px; /* corner-radius-large-default */
+    --dialog-radius: 16px; /* corner-radius-extra-large-default */
+    --card-shadow: none;
+    --popover-shadow: 0 2px 8px rgb(0 0 0 / 0.16); /* drop-shadow-200 */
+    --field-bg: rgb(255 255 255); /* gray-25 */
+    --field-shadow: none;
+    --dialog-shadow: 0 6px 16px rgb(0 0 0 / 0.2); /* drop-shadow-300 */
+    --btn-outline-w: 2px; /* border-width-200 */
+    --btn-outline-border: rgb(218 218 218); /* gray-300 */
+    --btn-outline-border-hover: rgb(198 198 198); /* gray-400 */
+    --btn-outline-shadow: none;
+    --btn-outline-bg: transparent;
+    --badge-radius: 6px;
+    --alert-radius: 8px;
+    --label-weight: 400; /* field label: regular */
+    --card-title-weight: 700;
+    --card-title-leading: 1.3;
+    --label-color: rgb(80 80 80); /* gray-700 */
+    --focus-ring-width: 2px; /* focus-indicator-thickness */
+    --focus-ring-offset: 2px; /* focus-indicator-gap */
+    --radius: 0.5rem;
+
+    /* Neutral layers and content */
+    --background: rgb(255 255 255); /* background-base */
+    --foreground: rgb(41 41 41); /* neutral-content gray-800 */
+    --heading: rgb(19 19 19); /* heading-color gray-900 */
+    --card: rgb(255 255 255); /* background-layer-2 */
+    --card-foreground: rgb(41 41 41);
+    --popover: rgb(255 255 255); /* background-elevated */
+    --popover-foreground: rgb(41 41 41);
+    --primary: rgb(59 99 251); /* accent-background-color-default */
+    --primary-hover: rgb(39 77 234); /* accent-background-color-hover */
+    --primary-foreground: rgb(255 255 255);
+    --secondary: rgb(233 233 233); /* gray-100: secondary fill button */
+    --secondary-hover: rgb(225 225 225); /* gray-200 */
+    --secondary-foreground: rgb(41 41 41);
+    --muted: rgb(243 243 243); /* gray-75 */
+    --muted-foreground: rgb(80 80 80); /* neutral-subdued-content gray-700 */
+    --accent: rgb(233 233 233); /* hover background gray-100 */
+    --accent-foreground: rgb(19 19 19);
+    --destructive: rgb(215 50 32); /* negative-background-color-default */
+    --destructive-hover: rgb(183 40 24); /* red-1000 */
+    --destructive-foreground: rgb(255 255 255);
+    --border: rgb(225 225 225); /* gray-200 */
+    --input: rgb(143 143 143); /* textfield border gray-500 */
+    --input-hover: rgb(113 113 113); /* gray-600 */
+    --ring: rgb(75 117 255); /* focus-indicator-color */
+
+    /* Semantic (status-light / badge / in-line alert) */
+    --positive: rgb(7 147 85); /* positive-visual-color */
+    --positive-subtle: rgb(215 247 225); /* positive-subtle-background */
+    --positive-border: rgb(107 227 162); /* green-400 */
+    --positive-strong: rgb(3 110 69); /* green-1000 */
+    --notice: rgb(212 91 0); /* notice-visual-color */
+    --notice-subtle: rgb(255 236 207);
+    --notice-border: rgb(255 193 94); /* orange-400 */
+    --notice-strong: rgb(167 62 0); /* orange-1000 */
+    --negative: rgb(240 56 35); /* negative-visual-color */
+    --negative-subtle: rgb(255 235 232);
+    --negative-border: rgb(255 188 180); /* red-400 */
+    --negative-strong: rgb(183 40 24); /* red-1000 */
+    --informative: rgb(75 117 255); /* informative-visual-color */
+    --informative-subtle: rgb(229 240 254);
+    --informative-border: rgb(172 207 253); /* blue-400 */
+    --informative-strong: rgb(39 77 234); /* blue-1000 */
+    --neutral-visual: rgb(143 143 143); /* neutral-visual-color */
+
+    /* Categorical data colors */
+    --chart-1: rgb(59 99 251); /* blue-900 */
+    --chart-2: rgb(9 144 120); /* seafoam-800 */
+    --chart-3: rgb(252 125 0); /* orange-600 */
+    --chart-4: rgb(166 92 231); /* purple-800 */
+    --chart-5: rgb(240 56 35); /* red-800 */
+
+    /* Side navigation */
+    --sidebar-background: rgb(248 248 248); /* background-layer-1 */
+    --sidebar: rgb(248 248 248);
+    --sidebar-foreground: rgb(41 41 41);
+    --sidebar-primary: rgb(59 99 251);
+    --sidebar-primary-foreground: rgb(255 255 255);
+    --sidebar-accent: rgb(233 233 233); /* selected item: gray-100 */
+    --sidebar-accent-foreground: rgb(19 19 19);
+    --sidebar-border: rgb(225 225 225);
+    --sidebar-ring: rgb(75 117 255);
+    --sun: rgb(252 125 0);
+}
+
+.dark {
+    --field-bg: rgb(17 17 17);
+    --btn-outline-border: rgb(57 57 57);
+    --btn-outline-border-hover: rgb(68 68 68);
+    --label-color: rgb(175 175 175);
+    --dialog-shadow: 0 6px 16px rgb(0 0 0 / 0.6);
+    --popover-shadow: 0 2px 8px rgb(0 0 0 / 0.48);
+
+    --background: rgb(17 17 17);
+    --foreground: rgb(219 219 219);
+    --heading: rgb(242 242 242);
+    --card: rgb(34 34 34);
+    --card-foreground: rgb(219 219 219);
+    --popover: rgb(34 34 34);
+    --popover-foreground: rgb(219 219 219);
+    --primary: rgb(64 105 253);
+    --primary-hover: rgb(52 91 248);
+    --primary-foreground: rgb(255 255 255);
+    --secondary: rgb(44 44 44);
+    --secondary-hover: rgb(50 50 50);
+    --secondary-foreground: rgb(219 219 219);
+    --muted: rgb(34 34 34);
+    --muted-foreground: rgb(175 175 175);
+    --accent: rgb(44 44 44);
+    --accent-foreground: rgb(242 242 242);
+    --destructive: rgb(223 52 34);
+    --destructive-hover: rgb(252 67 46);
+    --destructive-foreground: rgb(255 255 255);
+    --border: rgb(57 57 57);
+    --input: rgb(109 109 109);
+    --input-hover: rgb(138 138 138);
+    --ring: rgb(64 105 253);
+
+    --positive: rgb(9 157 89);
+    --positive-subtle: rgb(0 51 38);
+    --positive-border: rgb(3 106 67);
+    --positive-strong: rgb(14 175 98);
+    --notice: rgb(224 100 0);
+    --notice-subtle: rgb(80 27 0);
+    --notice-border: rgb(162 59 0);
+    --notice-strong: rgb(243 117 0);
+    --negative: rgb(252 67 46);
+    --negative-subtle: rgb(87 17 7);
+    --negative-border: rgb(177 38 23);
+    --negative-strong: rgb(255 103 86);
+    --informative: rgb(86 129 255);
+    --informative-subtle: rgb(12 33 117);
+    --informative-border: rgb(37 73 229);
+    --informative-strong: rgb(105 149 254);
+    --neutral-visual: rgb(138 138 138);
+
+    --chart-1: rgb(86 129 255);
+    --chart-2: rgb(10 154 128);
+    --chart-3: rgb(243 117 0);
+    --chart-4: rgb(173 105 233);
+    --chart-5: rgb(252 67 46);
+
+    --sidebar-background: rgb(27 27 27);
+    --sidebar: rgb(27 27 27);
+    --sidebar-foreground: rgb(219 219 219);
+    --sidebar-primary: rgb(86 129 255);
+    --sidebar-primary-foreground: rgb(255 255 255);
+    --sidebar-accent: rgb(44 44 44);
+    --sidebar-accent-foreground: rgb(242 242 242);
+    --sidebar-border: rgb(57 57 57);
+    --sidebar-ring: rgb(64 105 253);
+    --sun: rgb(243 117 0);
+}
+
+/*
+ * Marketing pages: same Spectrum 2 tokens as the app, on the "large" scale
+ * (bigger type and controls), with flat gray stages behind the product mockups.
+ */
+.theme-marketing {
+    --app-font-size: 16px;
+    --control-h: 40px; /* component-height-200 */
+    --control-h-sm: 32px; /* component-height-100 */
+    --control-h-lg: 48px; /* component-height-300 */
+    --heading-tracking: -0.015em;
+
+    --mk-layer: rgb(248 248 248); /* background-layer-1 */
+    --mk-chrome: rgb(243 243 243);
+    --mk-mock-shadow:
+        0 1px 2px rgb(0 0 0 / 0.06), 0 12px 32px -8px rgb(0 0 0 / 0.16);
+
+    font-family: var(--app-font-sans);
+    font-size: var(--app-font-size);
+    line-height: 1.5;
+    color: var(--foreground);
+    background-color: var(--background);
+}
+
+.dark .theme-marketing {
+    --mk-layer: rgb(27 27 27);
+    --mk-chrome: rgb(34 34 34);
+    --mk-mock-shadow:
+        0 1px 2px rgb(0 0 0 / 0.4), 0 16px 40px -8px rgb(0 0 0 / 0.7);
+}
+
+/* Flat canvas that product mockups sit on (background-layer-1). */
+.mk-stage {
+    background-color: var(--mk-layer);
+}
+
+.mk-mock {
+    background-color: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: var(--mk-mock-shadow);
+}
+
+/* Scroll reveal (class added by the v-reveal directive, client side only). */
+.mk-reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+        opacity 0.7s cubic-bezier(0.2, 0.7, 0.2, 1),
+        transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+    transition-delay: var(--mk-delay, 0ms);
+}
+
+.mk-reveal.is-visible {
+    opacity: 1;
+    transform: none;
+}
+
+/* Illustration motion */
+@keyframes mk-float {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+@keyframes mk-wave {
+    0%,
+    100% {
+        transform: scaleY(0.3);
+    }
+    50% {
+        transform: scaleY(1);
+    }
+}
+
+@keyframes mk-ring {
+    0% {
+        box-shadow: 0 0 0 0 color-mix(in srgb, var(--positive) 55%, transparent);
+    }
+    100% {
+        box-shadow: 0 0 0 14px transparent;
+    }
+}
+
+@keyframes mk-travel-y {
+    0% {
+        top: 0;
+        opacity: 0;
+    }
+    15%,
+    85% {
+        opacity: 1;
+    }
+    100% {
+        top: 100%;
+        opacity: 0;
+    }
+}
+
+@keyframes mk-pop {
+    0% {
+        opacity: 0;
+        transform: translateY(8px) scale(0.96);
+    }
+    100% {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@keyframes mk-draw {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes mk-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.mk-float {
+    animation: mk-float 6s ease-in-out infinite;
+}
+
+.mk-pop {
+    animation: mk-pop 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.mk-ring {
+    animation: mk-ring 1.2s ease-out infinite;
+}
+
+.mk-wave > span {
+    transform-origin: center;
+    animation: mk-wave 1s ease-in-out infinite;
+}
+
+/* Inline-flex <a>/<button> rendered as Spectrum "large" buttons on marketing. */
+.theme-marketing [data-slot='button'] {
+    font-size: 1rem;
+}
+
+.theme-marketing [data-slot='button'][data-size='sm'] {
+    font-size: 0.875rem;
+}
+
+@layer base {
+    * {
+        @apply border-border outline-ring/50;
+    }
+    body {
+        @apply bg-background text-foreground;
+    }
+}
+
+@layer base {
+    h1,
+    h2,
+    h3 {
+        font-family: var(--font-display);
+        font-weight: var(--heading-weight);
+        letter-spacing: var(--heading-tracking);
+        color: var(--heading);
+    }
+
+    body {
+        font-size: var(--app-font-size);
+        line-height: var(--app-line-height);
+        -webkit-font-smoothing: antialiased;
+    }
+
+    /* Form controls don't inherit the page font by default. */
+    button,
+    input,
+    select,
+    textarea,
+    code,
+    kbd,
+    pre,
+    samp {
+        font-family: inherit;
+    }
+
+    .font-mono,
+    code,
+    kbd {
+        font-variant-numeric: tabular-nums;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/*
+ * Spectrum keyboard focus: a 2px focus-indicator ring with a 2px gap, and a
+ * gray-800 border on focused fields.
+ */
+:is(
+    [data-slot='button'],
+    [data-slot='input'],
+    [data-slot='textarea'],
+    [data-slot='select-trigger'],
+    [data-slot='checkbox'],
+    [data-sidebar='menu-button'],
+    [role='tab']
+):focus-visible {
+    box-shadow: none;
+    outline: var(--focus-ring-width) solid var(--ring);
+    outline-offset: var(--focus-ring-offset);
+}
+
+:is(
+        [data-slot='input'],
+        [data-slot='textarea'],
+        [data-slot='select-trigger']
+    ):focus:not([aria-invalid='true']) {
+    border-color: var(--foreground);
+}

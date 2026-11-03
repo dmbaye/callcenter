@@ -1,0 +1,417 @@
+/*
+ * Adobe Spectrum 2 theme for emails, matching the application.
+ * Values come from the same tokens as resources/css/app.css:
+ * gray-25…900, accent blue-900, semantic colors, corner-radius and the
+ * Figtree typeface. Inlined by Laravel (CssToInlineStyles), so it only
+ * uses properties email clients support. Dark mode lives in layout.blade.php.
+ */
+
+/* Base */
+
+body,
+body *:not(html):not(style):not(br):not(tr):not(code) {
+    box-sizing: border-box;
+    font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    position: relative;
+}
+
+body {
+    -webkit-text-size-adjust: none;
+    background-color: #f8f8f8; /* background-layer-1 */
+    color: #292929; /* gray-800 */
+    height: 100%;
+    line-height: 1.5;
+    margin: 0;
+    padding: 0;
+    width: 100% !important;
+}
+
+p,
+ul,
+ol,
+blockquote {
+    line-height: 1.6;
+    text-align: left;
+}
+
+a {
+    color: #274dea; /* accent-content blue-1000 */
+    font-weight: 600;
+}
+
+a img {
+    border: none;
+}
+
+/* Typography (Spectrum heading: extra-bold, gray-900) */
+
+h1 {
+    color: #131313;
+    font-size: 24px;
+    font-weight: 800;
+    line-height: 1.25;
+    margin-top: 0;
+    margin-bottom: 16px;
+    text-align: left;
+}
+
+h2 {
+    color: #131313;
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 1.3;
+    margin-top: 0;
+    margin-bottom: 12px;
+    text-align: left;
+}
+
+h3 {
+    color: #131313;
+    font-size: 15px;
+    font-weight: 700;
+    margin-top: 0;
+    text-align: left;
+}
+
+p {
+    color: #292929;
+    font-size: 15px;
+    margin-top: 0;
+    margin-bottom: 16px;
+}
+
+p.sub {
+    font-size: 13px;
+}
+
+strong {
+    color: #131313;
+    font-weight: 700;
+}
+
+img {
+    max-width: 100%;
+}
+
+/* Layout */
+
+.wrapper {
+    -premailer-cellpadding: 0;
+    -premailer-cellspacing: 0;
+    -premailer-width: 100%;
+    background-color: #f8f8f8;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.wrapper-cell {
+    padding: 40px 16px;
+}
+
+.content {
+    -premailer-cellpadding: 0;
+    -premailer-cellspacing: 0;
+    -premailer-width: 100%;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+/* Header: logo tile + wordmark, left aligned like the app sidebar */
+
+.header {
+    padding: 0 0 20px;
+}
+
+.header-table {
+    -premailer-cellpadding: 0;
+    -premailer-cellspacing: 0;
+    -premailer-width: 600px;
+    margin: 0 auto;
+    width: 600px;
+}
+
+.header-cell {
+    padding: 0 4px;
+    text-align: left;
+}
+
+.brand-link {
+    display: inline-block;
+    text-decoration: none;
+}
+
+.logo {
+    border-radius: 9px;
+    height: 36px;
+    max-height: 36px;
+    vertical-align: middle;
+    width: 36px;
+}
+
+.brand-name {
+    color: #131313;
+    font-size: 18px;
+    font-weight: 800;
+    padding-left: 10px;
+    vertical-align: middle;
+}
+
+/* Body card (background-layer-2, corner-radius-extra-large) */
+
+.body {
+    -premailer-cellpadding: 0;
+    -premailer-cellspacing: 0;
+    -premailer-width: 100%;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.inner-body {
+    -premailer-cellpadding: 0;
+    -premailer-cellspacing: 0;
+    -premailer-width: 600px;
+    background-color: #ffffff;
+    border: 1px solid #e1e1e1; /* gray-200 */
+    border-radius: 16px;
+    margin: 0 auto;
+    padding: 0;
+    width: 600px;
+}
+
+.content-cell {
+    max-width: 100vw;
+    padding: 40px;
+}
+
+/* Footer */
+
+.footer {
+    -premailer-cellpadding: 0;
+    -premailer-cellspacing: 0;
+    -premailer-width: 600px;
+    margin: 0 auto;
+    padding: 0;
+    width: 600px;
+}
+
+.footer-cell {
+    padding: 24px 4px 0;
+}
+
+.footer p {
+    color: #6d6d6d; /* gray-600 */
+    font-size: 12px;
+    line-height: 1.6;
+    margin-bottom: 8px;
+    text-align: left;
+}
+
+.footer a {
+    color: #6d6d6d;
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+/* Subcopy */
+
+.subcopy {
+    border-top: 1px solid #e1e1e1;
+    margin-top: 28px;
+    padding-top: 20px;
+}
+
+.subcopy p {
+    color: #505050; /* gray-700 */
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.subcopy a {
+    font-weight: 400;
+}
+
+/* Buttons: Spectrum 2 pill buttons (component-height-200) */
+
+.action {
+    -premailer-cellpadding: 0;
+    -premailer-cellspacing: 0;
+    -premailer-width: 100%;
+    margin: 28px 0;
+    padding: 0;
+    width: 100%;
+}
+
+.button {
+    -webkit-text-size-adjust: none;
+    border-radius: 9999px;
+    color: #ffffff;
+    display: inline-block;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 20px;
+    overflow: hidden;
+    text-decoration: none;
+}
+
+.button-blue,
+.button-primary {
+    background-color: #3b63fb; /* accent-background-color-default */
+    border: 12px solid #3b63fb;
+    border-left-width: 24px;
+    border-right-width: 24px;
+}
+
+.button-green,
+.button-success {
+    background-color: #079355; /* positive */
+    border: 12px solid #079355;
+    border-left-width: 24px;
+    border-right-width: 24px;
+}
+
+.button-red,
+.button-error {
+    background-color: #d73220; /* negative-background-color-default */
+    border: 12px solid #d73220;
+    border-left-width: 24px;
+    border-right-width: 24px;
+}
+
+/* Badge (Spectrum badge: subtle fill, bold label) */
+
+.badge-table {
+    margin: 0 0 16px;
+}
+
+.badge {
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    padding: 4px 10px;
+}
+
+.badge-informative {
+    background-color: #e5f0fe;
+    color: #274dea;
+}
+
+.badge-positive {
+    background-color: #d7f7e1;
+    color: #036e45;
+}
+
+.badge-notice {
+    background-color: #ffeccf;
+    color: #a73e00;
+}
+
+.badge-negative {
+    background-color: #ffebe8;
+    color: #b72818;
+}
+
+.badge-neutral {
+    background-color: #e9e9e9;
+    color: #292929;
+}
+
+/* Summary: label / value rows */
+
+.summary {
+    -premailer-cellpadding: 0;
+    -premailer-cellspacing: 0;
+    margin: 8px 0 24px;
+    width: 100%;
+}
+
+.summary-row td {
+    border-bottom: 1px solid #e1e1e1;
+    font-size: 14px;
+    padding: 10px 0;
+    vertical-align: top;
+}
+
+.summary-label {
+    color: #505050;
+    width: 42%;
+}
+
+.summary-value {
+    color: #131313;
+    font-weight: 700;
+    text-align: right;
+}
+
+/* Panel: Spectrum in-line alert, subtle variant */
+
+.panel {
+    margin: 0 0 24px;
+}
+
+.panel-content {
+    background-color: #f3f3f3; /* gray-75 */
+    border-radius: 8px;
+    color: #292929;
+    padding: 16px 20px;
+}
+
+.panel-informative {
+    background-color: #e5f0fe;
+}
+
+.panel-notice {
+    background-color: #ffeccf;
+}
+
+.panel-negative {
+    background-color: #ffebe8;
+}
+
+.panel-positive {
+    background-color: #d7f7e1;
+}
+
+.panel-content p {
+    color: #292929;
+    font-size: 14px;
+}
+
+.panel-content p:last-of-type {
+    margin-bottom: 0;
+}
+
+/* Table (Markdown tables): Spectrum table, row dividers */
+
+.table table {
+    -premailer-cellpadding: 0;
+    -premailer-cellspacing: 0;
+    -premailer-width: 100%;
+    margin: 24px 0;
+    width: 100%;
+}
+
+.table th {
+    border-bottom: 1px solid #c6c6c6;
+    color: #505050;
+    font-size: 13px;
+    font-weight: 700;
+    margin: 0;
+    padding: 8px 0;
+    text-align: left;
+}
+
+.table td {
+    border-bottom: 1px solid #e1e1e1;
+    color: #292929;
+    font-size: 14px;
+    margin: 0;
+    padding: 10px 0;
+}
+
+.content-cell .break-all {
+    word-break: break-all;
+}
